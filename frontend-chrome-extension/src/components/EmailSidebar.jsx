@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-export default function EmailSidebar({ email }) {
+export default function EmailSidebar() {
+  const [email, setEmail] = useState(null);
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const draftRef = useRef(null);
 
   useEffect(() => {
-    if (email) processEmail();
-  }, [email]);
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.action === "newEmail") {
+        setEmail(message.email);
+      }
+    });
+  }, []);
 
   const processEmail = async () => {
+    if (!email) return;
     setLoading(true);
     setError(null);
     try {
@@ -20,28 +27,33 @@ export default function EmailSidebar({ email }) {
       setError("Reggy is under construction please try again in a bit");
     }
     setLoading(false);
+    if (draftRef.current) {
+      draftRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <div className="p-2 bg-white border fixed right-0 top-0 w-[300px]">
       <h2 className="text-xl font-bold">Detected Email</h2>
-      <p><b>Subject:</b> {email?.subject || "No Subject"}</p>
-      <p><b>Body:</b> {email?.body || "No Content"}</p>
-
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {response && (
+      {email ? (
         <>
-          <h2 className="font-bold">Student Info</h2>
-          <p>Name: {response.studentInfo?.name || "N/A"}</p>
-          <p>ID: {response.studentInfo?.studentId || "N/A"}</p>
-          <p>FAFSA: {response.studentInfo?.fafsaDate || "N/A"}</p>
-
-          <h2 className="font-bold">Draft Response</h2>
-          <p>{response.draft || "N/A"}</p>
-          <button onClick={() => navigator.clipboard.writeText(response.draft)}>Copy</button>
+          <p><b>Subject:</b> {email.subject}</p>
+          <p><b>Body:</b> {email.body}</p>
+          <button onClick={processEmail} className="mt-2 bg-blue-500 text-white p-2 rounded">Paste an Email</button>
         </>
+      ) : (
+        <p>No new emails detected</p>
+      )}
+      {loading && <div className="spinner"></div>}
+      {error && <p className="text-red-500">{error}</p>}
+      {response && (
+        <div ref={draftRef}>
+          <h2 className="font-bold">Draft Response</h2>
+          <p>{response.draft}</p>
+          {response.flag && <p className="text-red-500">⚠️ Poor Response</p>}
+          <p className="text-gray-500">Sources: {response.sources}</p>
+          <button onClick={() => navigator.clipboard.writeText(response.draft)}>Copy</button>
+        </div>
       )}
     </div>
   );
