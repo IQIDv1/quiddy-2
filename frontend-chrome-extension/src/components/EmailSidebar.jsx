@@ -44,21 +44,30 @@ export default function EmailSidebar() {
       ) : (
         <p>No new emails detected</p>
       )}
-
       {loading && <div className="spinner"></div>}
       {error && <p className="text-red-500">{error}</p>}
-
       {response && (
         <>
-          <h2 className="font-bold">Student Information</h2>
-          <p><b>Name:</b> {response.studentInfo?.name || "N/A"}</p>
-          <p><b>ID:</b> {response.studentInfo?.studentId || "N/A"}</p>
-          <p><b>FAFSA Submitted:</b> {response.studentInfo?.fafsaDate || "N/A"}</p>
-          <p><b>Aid Status:</b> {response.studentInfo?.aidStatus || "N/A"}</p>
-          <p><b>Outstanding Requirements:</b> {response.studentInfo?.requirements?.join(", ") || "None"}</p>
-
+          {/* Student Information Section - Added to display mock student data above Draft Response */}
+          <div>
+            <h2 className="font-bold mt-4">Student Information</h2>
+            <p><b>Name:</b> Sarah Johnson</p>
+            <p><b>Student ID:</b> 123456</p>
+            <p><b>FAFSA Submission Date:</b> 11/15/2023</p>
+            <p><b>Current Aid Status:</b></p>
+            <ul className="list-disc pl-4">
+              <li>Pell Grant: $3,172</li>
+              <li>Subsidized Loan: $3,500</li>
+            </ul>
+            <p><b>Outstanding Requirements:</b></p>
+            <ul className="list-disc pl-4">
+              <li>Signed tax return</li>
+              <li>Verification of Untaxed Income</li>
+            </ul>
+          </div>
+          {/* End of Student Information Section */}
           <div ref={draftRef}>
-            <h2 className="font-bold">Draft Response</h2>
+            <h2 className="font-bold mt-4">Draft Response</h2>
             <p>{response.draft}</p>
             {response.flag && <p className="text-red-500">⚠️ Poor Response</p>}
             <p className="text-gray-500">Sources: {response.sources}</p>
