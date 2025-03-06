@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function EmailSidebar({ email }) {
   const [response, setResponse] = useState(null);
@@ -14,7 +14,7 @@ export default function EmailSidebar({ email }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.post("https://your-vercel-backend.com/process-email", email);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/process-email", email);
       setResponse(res.data);
     } catch {
       setError("Reggy is under construction please try again in a bit");
@@ -25,8 +25,8 @@ export default function EmailSidebar({ email }) {
   return (
     <div className="p-2 bg-white border fixed right-0 top-0 w-[300px]">
       <h2 className="text-xl font-bold">Detected Email</h2>
-      <p><b>Subject:</b> {email.subject}</p>
-      <p><b>Body:</b> {email.body}</p>
+      <p><b>Subject:</b> {email?.subject || "No Subject"}</p>
+      <p><b>Body:</b> {email?.body || "No Content"}</p>
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -34,12 +34,12 @@ export default function EmailSidebar({ email }) {
       {response && (
         <>
           <h2 className="font-bold">Student Info</h2>
-          <p>Name: {response.studentInfo.name}</p>
-          <p>ID: {response.studentInfo.studentId}</p>
-          <p>FAFSA: {response.studentInfo.fafsaDate}</p>
+          <p>Name: {response.studentInfo?.name || "N/A"}</p>
+          <p>ID: {response.studentInfo?.studentId || "N/A"}</p>
+          <p>FAFSA: {response.studentInfo?.fafsaDate || "N/A"}</p>
 
           <h2 className="font-bold">Draft Response</h2>
-          <p>{response.draft}</p>
+          <p>{response.draft || "N/A"}</p>
           <button onClick={() => navigator.clipboard.writeText(response.draft)}>Copy</button>
         </>
       )}
