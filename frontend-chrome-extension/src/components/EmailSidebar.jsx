@@ -49,7 +49,7 @@ export default function EmailSidebar() {
       {error && <p className="text-red-500">{error}</p>}
 
       {response && (
-        <div ref={draftRef}>
+        <>
           <h2 className="font-bold">Student Information</h2>
           <p><b>Name:</b> {response.studentInfo?.name || "N/A"}</p>
           <p><b>ID:</b> {response.studentInfo?.studentId || "N/A"}</p>
@@ -57,12 +57,14 @@ export default function EmailSidebar() {
           <p><b>Aid Status:</b> {response.studentInfo?.aidStatus || "N/A"}</p>
           <p><b>Outstanding Requirements:</b> {response.studentInfo?.requirements?.join(", ") || "None"}</p>
 
-          <h2 className="font-bold">Draft Response</h2>
-          <p>{response.draft}</p>
-          {response.flag && <p className="text-red-500">⚠️ Poor Response</p>}
-          <p className="text-gray-500">Sources: {response.sources}</p>
-          <button onClick={() => navigator.clipboard.writeText(response.draft)}>Copy</button>
-        </div>
+          <div ref={draftRef}>
+            <h2 className="font-bold">Draft Response</h2>
+            <p>{response.draft}</p>
+            {response.flag && <p className="text-red-500">⚠️ Poor Response</p>}
+            <p className="text-gray-500">Sources: {response.sources}</p>
+            <button onClick={() => navigator.clipboard.writeText(response.draft)}>Copy</button>
+          </div>
+        </>
       )}
     </div>
   );
