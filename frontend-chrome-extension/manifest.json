@@ -22,10 +22,8 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["index.js"],
+      "resources": ["dist/app.bundle.js"],
       "matches": ["https://mail.google.com/*"]
     }
   ]
-  
-  
 }
