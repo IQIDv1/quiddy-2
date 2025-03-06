@@ -28,6 +28,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// Mock email detection every 60 seconds
 setInterval(() => {
   console.log("Sending mock email message");
   chrome.runtime.sendMessage({
