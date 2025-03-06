@@ -4,7 +4,7 @@
   "description": "A Chrome extension to assist financial aid advisors with email processing",
   "main": "src/index.js",
   "scripts": {
-    "build": "echo 'No build step required for Chrome extension'",
+    "build": "esbuild src/App.jsx --bundle --outfile=dist/app.bundle.js --format=iife --global-name=AppBundle",
     "test": "echo 'No tests specified' && exit 0"
   },
   "dependencies": {
@@ -13,7 +13,9 @@
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.1"
   },
-  "devDependencies": {},
-  "author": "Your Name",
+  "devDependencies": {
+    "esbuild": "^0.21.5"
+  },
+  "author": "JFow",
   "license": "MIT"
 }

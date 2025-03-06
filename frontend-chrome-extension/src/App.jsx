@@ -91,8 +91,8 @@ function App() {
       )}
       <div className="mt-4">
         <EmailAgentUI />
-        <SummarizeEmail />
-        <WriteEmail />
+        <SummarizeEmails />
+        <WriteEmails />
         <ImproveEmail />
         <ChatWithAgent />
         <ChatAboutEmail />
