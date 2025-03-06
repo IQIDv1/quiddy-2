@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Financial Aid Email Assistant",
+    "version": "1.0",
+    "permissions": ["identity", "storage"],
+    "host_permissions": ["https://mail.google.com/"],
+    "action": {
+      "default_popup": "index.html"
+    }
+  }
+  
